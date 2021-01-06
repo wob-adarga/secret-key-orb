@@ -1,0 +1,7 @@
+version: 2.1
+
+description: >
+  Enables use of keys supplied from, for example the global context,
+  within the shell.
+
+  source_url: "https://www.github.com/wob-adarga/secret-key-orb""
