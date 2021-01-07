@@ -1,0 +1,37 @@
+description: >
+  This command sets up a provided key or keys for git usage if
+  provided. Keys should be passed in base64 encoded. The email address
+  obtained from a gpg import will be stored as GIT_EMAIL in the bash
+  context.
+parameters:
+  git-ssh:
+    type: string
+    default: ""
+  git-gpg:
+    type: string
+    default: ""
+steps:
+  - when:
+      condition: "<<parameters.git-gpg>>"
+      steps:
+        - run:
+            name: Configure git gpg signing
+            command: |
+              echo <<parameters.git-gpg>> | base64 -d > /tmp/gpg.key
+              gpg --import /tmp/gpg.key 2>&1| tee /tmp/gpg.import.out
+              GIT_EMAIL=$(sed -nEe '/imported/ s/.*<(.*)>.*/\1/p' /tmp/gpg.import.out)
+              echo "export GIT_EMAIL=${GIT_EMAIL}" >> $BASH_ENV
+              git config --global user.email "$GIT_EMAIL"
+              git config --global commit.gpgsign true
+  - when:
+      condition: "<<parameters.git-ssh>>"
+      steps:
+        - run:
+            name: Configure git ssh key
+            # unset sock auth as we will only use this key and not any of those cci
+            # adds to the agent
+            command: |
+              echo "unset SSH_AUTH_SOCK" >> $BASH_ENV
+              echo <<parameters.git-ssh>> | base64 -d > ~/.ssh/id_git
+              chmod 600 ~/.ssh/id_git
+              echo "export GIT_SSH_COMMAND='ssh -i $HOME/.ssh/id_git'" >> $BASH_ENV

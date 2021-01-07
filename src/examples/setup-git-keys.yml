@@ -1,0 +1,11 @@
+description: >
+  This example shows how to set up keys for use in the git context
+  from within a workflow.
+usage:
+  version: 2.1
+  orbs:
+    secret-key-orb: wob-adarga/secret-key-orb@0.0.4
+  steps:
+    - secret-key-orb/setup-git-keys:
+        git-ssh: $CIRCLE_CONTEXT_GIT_SSH_KEY
+        git-gpg: $CIRCLE_CONTEXT_GIT_GPG_KEY
