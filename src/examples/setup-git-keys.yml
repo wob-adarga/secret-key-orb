@@ -4,8 +4,10 @@ description: >
 usage:
   version: 2.1
   orbs:
-    secret-key-orb: wob-adarga/secret-key-orb@0.0.4
-  steps:
-    - secret-key-orb/setup-git-keys:
-        git-ssh: $CIRCLE_CONTEXT_GIT_SSH_KEY
-        git-gpg: $CIRCLE_CONTEXT_GIT_GPG_KEY
+    secret-key-orb: wob-adarga/secret-key-orb@0.0.5
+  jobs:
+    build:
+      steps:
+        - secret-key-orb/setup-git-keys:
+            git-ssh: $CIRCLE_CONTEXT_GIT_SSH_KEY
+            git-gpg: $CIRCLE_CONTEXT_GIT_GPG_KEY
