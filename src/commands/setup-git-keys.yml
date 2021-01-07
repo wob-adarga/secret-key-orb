@@ -1,6 +1,8 @@
 description: >
   This command sets up a provided key or keys for git usage if
-  provided. Keys should be passed in base64 encoded.
+  provided. Keys should be passed in base64 encoded. The email address
+  obtained from a gpg import will be stored as GIT_EMAIL in the bash
+  context.
 parameters:
   git-ssh:
     type: string
@@ -17,8 +19,9 @@ steps:
             command: |
               echo <<parameters.git-gpg>> | base64 -d > /tmp/gpg.key
               gpg --import /tmp/gpg.key 2>&1| tee /tmp/gpg.import.out
-              EML=$(sed -nEe '/imported/ s/.*<(.*)>.*/\1/p' /tmp/gpg.import.out)
-              git config --global user.email "$EML"
+              GIT_EMAIL=$(sed -nEe '/imported/ s/.*<(.*)>.*/\1/p' /tmp/gpg.import.out)
+              echo "export GIT_EMAIL=${GIT_EMAIL}" >> $BASH_ENV
+              git config --global user.email "$GIT_EMAIL"
               git config --global commit.gpgsign true
   - when:
       condition: "<<parameters.git-ssh>>"
