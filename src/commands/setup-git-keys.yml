@@ -32,6 +32,7 @@ steps:
             # adds to the agent
             command: |
               echo "unset SSH_AUTH_SOCK" >> $BASH_ENV
+              mkdir -p ~/.ssh && chmod 700 ~/.ssh
               echo <<parameters.git-ssh>> | base64 -d > ~/.ssh/id_git
               chmod 600 ~/.ssh/id_git
               echo "export GIT_SSH_COMMAND='ssh -i $HOME/.ssh/id_git'" >> $BASH_ENV
