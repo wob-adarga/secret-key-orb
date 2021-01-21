@@ -4,10 +4,13 @@ description: >
 usage:
   version: 2.1
   orbs:
-    secret-key-orb: wob-adarga/secret-key-orb@0.0.5
+    sk: wob-adarga/secret-key-orb@0.1.0
   jobs:
     build:
+      docker:
+        - image: circleci/node:10.16.3
       steps:
-        - secret-key-orb/setup-git-keys:
-            git-ssh: $CIRCLE_CONTEXT_GIT_SSH_KEY
-            git-gpg: $CIRCLE_CONTEXT_GIT_GPG_KEY
+        - sk/setup-git-keys:
+            ssh-key: $CIRCLE_CONTEXT_GIT_SSH_KEY
+            ssh-cert: $CIRCLE_CONTEXT_GIT_SSH_KEY
+            gpg-key: $CIRCLE_CONTEXT_GIT_GPG_KEY
