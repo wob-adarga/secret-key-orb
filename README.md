@@ -12,6 +12,8 @@ Currently support for
 
 Additional READMEs are available in each directory.
 
+*N.B.* Minimum supported circleci machine image: ubuntu-2004:202008-01
+
 ## Resources
 
 [CircleCI Orb Registry Page](https://circleci.com/orbs/registry/orb/wob-adarga/secret-key-orb) - The official registry page of this orb for all versions, executors, commands, and jobs described.
